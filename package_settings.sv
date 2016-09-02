@@ -2,7 +2,7 @@
 // Title       : package_settings (parameters)
 //-----------------------------------------------------------------------------
 // File        : package_settings.sv
-// Company     : INP SB RAS
+// Company     : My company
 // Created     : 11/03/2014
 // Created by  : Alina Ivanova
 //-----------------------------------------------------------------------------
@@ -10,13 +10,13 @@
 //-----------------------------------------------------------------------------
 // Revision    : 1.0_alpha
 //-----------------------------------------------------------------------------
-// Copyright (c) 2014 INP SB RAS
+// Copyright (c) 2014 My company
 // This work may not be copied, modified, re-published, uploaded, executed, or
 // distributed in any way, in any medium, whether in whole or in part, without
-// prior written permission from INP SB RAS.
+// prior written permission from My Company.
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-	`define NG_SEPARATION
+`define NG_SEPARATION
 // package_settings
 // pulse_analyzer_2ch_250MHz
 // test_sig_gen
@@ -63,8 +63,6 @@ package package_settings;
 //-----------------------------------------------------------------------------
 	parameter SIZE_MEASURING_ZERO_LINE_COUNTER               = 9;
 	parameter MEASURING_ZERO_LINE_TIME                       = 254;
-//-----------------------------------------------------------------------------
-	parameter SIZE_COUNTER_PILE_UP_TIME                      = 9;  //убрать
 //-----------------------------------------------------------------------------
 	parameter SIZE_REGISTER                                  = 16;
 	parameter SIZE_COMMAND                                   = 8;

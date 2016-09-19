@@ -40,7 +40,7 @@ module moving_average (
 //-----------------------------------------------------------------------------
 // Signal declarations
 //-----------------------------------------------------------------------------
-	reg         [SIZE_DATA-1:0]                                shift_reg        [SIZE_MAX_WINDOW-1:0];
+	reg         [SIZE_DATA-1:0]                                shift_reg        [SIZE_MAX_WINDOW];
 	reg signed  [SIZE_DATA-1:0]                                pre_data
 	reg signed  [SIZE_DATA-1:0]                                pre_pre_data;
 	reg signed  [SIZE_DATA-1:0]                                sum_shift;

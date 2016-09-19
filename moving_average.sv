@@ -61,7 +61,7 @@ module moving_average (
 //-----------------------------------------------------------------------------
 	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_SHIFT_REG
 		if (!reset) begin
-			for (integer i = 0; i < SIZE_MAX_WINDOW; i++) begin
+			for (int i = 0; i < SIZE_MAX_WINDOW; i++) begin
 				shift_reg[i]                      <= '0;
 			end
 		end else begin

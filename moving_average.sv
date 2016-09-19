@@ -76,7 +76,7 @@ module moving_average (
 		if (!reset) begin
 			{window_set_internal, pre_pre_data, pre_data} <= '0;
 		end else begin
-			window_set_internal                           <= window_set - '1;
+			window_set_internal                           <= window_set - 1;
 			pre_pre_data                                  <= shift_reg[window_set_internal];
 			pre_data                                      <= shift_reg[0] - pre_pre_data;
 		end
@@ -136,7 +136,7 @@ module moving_average (
 		end else begin
 			if (enable) begin
 				if (ena_plus_one) begin
-					output_data                <= sum_shift++;
+					output_data                <= sum_shift + 1;
 				end else begin
 					output_data                <= sum_shift;
 				end

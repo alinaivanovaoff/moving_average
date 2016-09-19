@@ -1,2 +1,2 @@
-# mov_av
+# moving_average
 Moving Average

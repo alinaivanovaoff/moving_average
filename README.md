@@ -1,2 +1,2 @@
 # moving_average
-Moving Average
+Recursive Moving Average

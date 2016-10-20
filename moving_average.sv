@@ -59,7 +59,7 @@ module moving_average (
 //-----------------------------------------------------------------------------
 // Process Section
 //-----------------------------------------------------------------------------
-	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_SHIFT_REG
+	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SHIFT_REG
 		if (!reset) begin
 			for (int i = 0; i < SIZE_MAX_WINDOW; i++) begin
 				shift_reg[i]                      <= '0;
@@ -72,7 +72,7 @@ module moving_average (
 		end
 	end: MOVING_AVERAGE_SHIFT_REG
 //-----------------------------------------------------------------------------
-	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_PRE_DATA
+	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_PRE_DATA
 		if (!reset) begin
 			{window_set_internal, pre_pre_data, pre_data} <= '0;
 		end else begin
@@ -82,7 +82,7 @@ module moving_average (
 		end
 	end: MOVING_AVERAGE_PRE_DATA
 //-----------------------------------------------------------------------------
-	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM
+	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM
 		if (!reset) begin
 			sum                                       <= '0;
 		end else begin
@@ -90,7 +90,7 @@ module moving_average (
 		end
 	end: MOVING_AVERAGE_SUM
 //-----------------------------------------------------------------------------
-	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM_SHIFT
+	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM_SHIFT
 		if (!reset) begin
 			{sum_shift, ena_plus_one}                 <= '0;
 		end else begin
@@ -130,7 +130,7 @@ module moving_average (
 		end
 	end: MOVING_AVERAGE_SUM_SHIFT
 //-----------------------------------------------------------------------------
-	always_ff @ (negedge reset or posedge clk) begin: MOVING_AVERAGE_OUTPUT_DATA
+	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_OUTPUT_DATA
 		if (!reset) begin
 			output_data                                <= '0;
 		end else begin

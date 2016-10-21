@@ -1,21 +1,5 @@
-//-----------------------------------------------------------------------------
-// Title       : package_settings (parameters)
-//-----------------------------------------------------------------------------
-// File        : package_settings.sv
-// Company     : My company
-// Created     : 11/03/2014
-// Created by  : Alina Ivanova
-//-----------------------------------------------------------------------------
-// Description : settings package
-//-----------------------------------------------------------------------------
-// Revision    : 1.0
-//-----------------------------------------------------------------------------
-// Copyright (c) 2014 My company
-// This work may not be copied, modified, re-published, uploaded, executed, or
-// distributed in any way, in any medium, whether in whole or in part, without
-// prior written permission from My Company.
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
+//(c) Alina Ivanova, alina.al.ivanova@gmail.com
+//----------------------------------------------------------------------------- 
 package package_settings;
 //-----------------------------------------------------------------------------
 // Parameter Declaration(s)
@@ -24,5 +8,4 @@ package package_settings;
 	parameter SIZE_WINDOW                     = 8;
 	parameter SIZE_DATA                       = 16;
 //-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-endpackage
+endpackage: package_settings

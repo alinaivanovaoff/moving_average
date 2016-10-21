@@ -1,22 +1,7 @@
+//(c) Alina Ivanova, alina.al.ivanova@gmail.com
 //-----------------------------------------------------------------------------
-// Title       : moving_average
-//-----------------------------------------------------------------------------
-// File        : moving_average.sv
-// Company     : My Company
-// Created     : 04/12/2014
-// Created by  : Alina Ivanova
-//-----------------------------------------------------------------------------
-// Description : moving_average
-//-----------------------------------------------------------------------------
-// Revision    : 1.1
-//-----------------------------------------------------------------------------
-// Copyright (c) 2014 My Company
-// This work may not be copied, modified, re-published, uploaded, executed, or
-// distributed in any way, in any medium, whether in whole or in part, without
-// prior written permission from My Company.
-//-----------------------------------------------------------------------------
-// SystemVerilog moving_average
-//-----------------------------------------------------------------------------
+// Moving average SIZE_DATA arithmetics
+//----------------------------------------------------------------------------
 `timescale 1ns/1ps
 //-----------------------------------------------------------------------------
 import package_settings::*;
@@ -29,9 +14,7 @@ module moving_average (
 	input  wire                                                reset,
 //-----------------------------------------------------------------------------
 	input  wire [SIZE_DATA-1:0]                                input_data,
-//-----------------------------------------------------------------------------
 	input  wire                                                enable,
-//-----------------------------------------------------------------------------
 	input  wire [SIZE_WINDOW-1:0]                              window_set,
 //-----------------------------------------------------------------------------
 // Output Ports
@@ -62,69 +45,69 @@ module moving_average (
 	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SHIFT_REG
 		if (!reset) begin
 			for (int i = 0; i < SIZE_MAX_WINDOW; i++) begin
-				shift_reg[i]                      <= '0;
+				shift_reg[i]                                  <= '0;
 			end
 		end else begin
-			shift_reg[0]                              <= input_data;
+			shift_reg[0]                                      <= input_data;
 			for (int i = 1; i < SIZE_MAX_WINDOW; i++) begin
-				shift_reg[i]                      <= shift_reg[i-1];
+				shift_reg[i]                                  <= shift_reg[i-1];
 			end
 		end
 	end: MOVING_AVERAGE_SHIFT_REG
 //-----------------------------------------------------------------------------
 	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_PRE_DATA
 		if (!reset) begin
-			{window_set_internal, pre_pre_data, pre_data} <= '0;
+			{window_set_internal, pre_pre_data, pre_data}     <= '0;
 		end else begin
-			window_set_internal                           <= window_set - 1;
-			pre_pre_data                                  <= shift_reg[window_set_internal];
-			pre_data                                      <= shift_reg[0] - pre_pre_data;
+			window_set_internal                               <= window_set - 1;
+			pre_pre_data                                      <= shift_reg[window_set_internal];
+			pre_data                                          <= shift_reg[0] - pre_pre_data;
 		end
 	end: MOVING_AVERAGE_PRE_DATA
 //-----------------------------------------------------------------------------
 	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM
 		if (!reset) begin
-			sum                                       <= '0;
+			sum                                               <= '0;
 		end else begin
-			sum                                       <= sum + pre_data;
+			sum                                               <= sum + pre_data;
 		end
 	end: MOVING_AVERAGE_SUM
 //-----------------------------------------------------------------------------
 	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_SUM_SHIFT
 		if (!reset) begin
-			{sum_shift, ena_plus_one}                 <= '0;
+			{sum_shift, ena_plus_one}                         <= '0;
 		end else begin
 			case (window_set)
 				1: begin
-					sum_shift                 <=  sum;
-					ena_plus_one              <=  '0;
+					sum_shift                                 <= sum;
+					ena_plus_one                              <= '0;
 				end
 				2: begin
-					sum_shift                 <= sum >>> 1;
-					ena_plus_one              <= sum[0];
+					sum_shift                                 <= sum >>> 1;
+					ena_plus_one                              <= sum[0];
 				end
 				4: begin
-					sum_shift                  <= sum >>> 2;
-					ena_plus_one               <= sum[1];
+					sum_shift                                 <= sum >>> 2;
+					ena_plus_one                              <= sum[1];
 				end
 				8: begin
-					sum_shift                  <= sum >>> 3;
-					ena_plus_one               <= sum[2];
+					sum_shift                                 <= sum >>> 3;
+					ena_plus_one                              <= sum[2];
 				end
 				16: begin
-					sum_shift                  <= sum >>> 4;
-					ena_plus_one               <= sum[3];
+					sum_shift                                 <= sum >>> 4;
+					ena_plus_one                              <= sum[3];
 				end
 				32: begin
-					sum_shift                  <= sum >>> 5;
-					ena_plus_one               <= sum[4];
+					sum_shift                                 <= sum >>> 5;
+					ena_plus_one                              <= sum[4];
 				end
 				64: begin
-					sum_shift                  <= sum >>> 6;
-					ena_plus_one               <= sum[5];
+					sum_shift                                 <= sum >>> 6;
+					ena_plus_one                              <= sum[5];
 				end default: begin
-					sum_shift                  <= 0;
-					ena_plus_one               <= 0;
+					sum_shift                                 <= '0;
+					ena_plus_one                              <= '0;
 				end
 			endcase
 		end
@@ -132,14 +115,10 @@ module moving_average (
 //-----------------------------------------------------------------------------
 	always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_OUTPUT_DATA
 		if (!reset) begin
-			output_data                                <= '0;
+			output_data                                       <= '0;
 		end else begin
 			if (enable) begin
-				if (ena_plus_one) begin
-					output_data                <= sum_shift + 1;
-				end else begin
-					output_data                <= sum_shift;
-				end
+				output_data                                   <= ena_plus_one ? sum_shift + {{SIZE_DATA-1{0}},1'b1} : sum_shift;
 			end else
 				;
 		end

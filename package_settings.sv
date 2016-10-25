@@ -4,8 +4,8 @@ package package_settings;
 //-----------------------------------------------------------------------------
 // Parameter Declaration(s)
 //-----------------------------------------------------------------------------
-	parameter SIZE_MAX_WINDOW                 = 64;
-	parameter SIZE_WINDOW                     = 8;
-	parameter SIZE_DATA                       = 16;
+    parameter SIZE_MAX_WINDOW                 = 64;
+    parameter SIZE_WINDOW                     = 7;
+    parameter SIZE_DATA                       = 16;
 //-----------------------------------------------------------------------------
 endpackage: package_settings

@@ -1,8 +1,8 @@
 //(c) Alina Ivanova, alina.al.ivanova@gmail.com
 //-----------------------------------------------------------------------------
-// Moving average SIZE_DATA arithmetics
+// Moving average SIZE_DATA arithmetics, Window: 0,1,2,4,8,16,32,64
 //----------------------------------------------------------------------------
-`timescale 1ns/1ps
+`timescale 1ns / 1ps
 //-----------------------------------------------------------------------------
 import package_settings::*;
 //-----------------------------------------------------------------------------
@@ -15,7 +15,7 @@ module moving_average (
 //-----------------------------------------------------------------------------
     input  wire [SIZE_DATA-1:0]                                input_data,
     input  wire                                                enable,
-    input  wire [SIZE_WINDOW-1:0]                              window_set,
+    input  wire [SIZE_WINDOW-1:0]                              window,//0,1,2,4,8,16,32,64
 //-----------------------------------------------------------------------------
 // Output Ports
 //-----------------------------------------------------------------------------
@@ -23,13 +23,13 @@ module moving_average (
 //-----------------------------------------------------------------------------
 // Signal declarations
 //-----------------------------------------------------------------------------
-    reg         [SIZE_DATA-1:0]                                shift_reg        [SIZE_MAX_WINDOW];
-    reg signed  [SIZE_DATA-1:0]                                pre_data
-    reg signed  [SIZE_DATA-1:0]                                pre_pre_data;
+    reg         [SIZE_DATA-1:0]                                shift_reg      [SIZE_MAX_WINDOW];
+    reg signed  [SIZE_DATA-1:0]                                data;
+    reg signed  [SIZE_DATA-1:0]                                data_diff;
     reg signed  [SIZE_DATA-1:0]                                sum_shift;
     reg signed  [SIZE_MAX_WINDOW-1:0]                          sum;
     reg         [SIZE_WINDOW-1:0]                              ena_plus_one;
-    reg         [SIZE_WINDOW-1:0]                              window_set_internal;
+    reg         [SIZE_WINDOW-1:0]                              window_internal;
 //-----------------------------------------------------------------------------
 // Function Section
 //-----------------------------------------------------------------------------
@@ -57,11 +57,11 @@ module moving_average (
 //-----------------------------------------------------------------------------
     always_ff @(negedge reset or posedge clk) begin: MOVING_AVERAGE_PRE_DATA
         if (!reset) begin
-            {window_set_internal, pre_pre_data, pre_data}     <= '0;
+            {window_internal, data, data_diff}                <= '0;
         end else begin
-            window_set_internal                               <= window_set - {{SIZE_WINDOW-1{0}},1'b1};
-            pre_pre_data                                      <= shift_reg[window_set_internal];
-            pre_data                                          <= shift_reg[0] - pre_pre_data;
+            window_internal                                   <= window - {{SIZE_WINDOW-1{0}}, 1'b1};
+            data                                              <= shift_reg[window_internal];
+            data_diff                                         <= shift_reg[0] - data;
         end
     end: MOVING_AVERAGE_PRE_DATA
 //-----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ module moving_average (
         if (!reset) begin
             sum                                               <= '0;
         end else begin
-            sum                                               <= sum + pre_data;
+            sum                                               <= sum + data_diff;
         end
     end: MOVING_AVERAGE_SUM
 //-----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ module moving_average (
         if (!reset) begin
             {sum_shift, ena_plus_one}                         <= '0;
         end else begin
-            case (window_set)
+            case (window)
                 1: begin
                     sum_shift                                 <= sum;
                     ena_plus_one                              <= '0;
@@ -118,9 +118,8 @@ module moving_average (
             output_data                                       <= '0;
         end else begin
             if (enable) begin
-                output_data                                   <= ena_plus_one ? sum_shift + {{SIZE_DATA-1{0}},1'b1} : sum_shift;
-            end else
-                ;
+                output_data                                   <= ena_plus_one ? sum_shift + {{SIZE_DATA-1{0}}, 1'b1} : sum_shift;
+            end
         end
     end: MOVING_AVERAGE_OUTPUT_DATA
 //-----------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------------
 // Original Author: Alina Ivanova
-// Contact Point: Alina Ivanova (alina.al.ivanova@gmail.com)
+// email: alina.al.ivanova@gmail.com
+// web: alinaivanovaoff.com
 // moving_average_test_program.sv
 // Created: 10.26.2016
 //
